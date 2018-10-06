@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <script type="text/javascript" src="/js/vendors/jquery/jquery-1.9.0.js"></script>
+      <style>
+          #btnBlink{
+              height:200px;
+              width:30%;
+              font-size:60px;
+              font-weight: bold;
+              color: lawngreen;
+          }
+      </style>
+      <script>
+
+          function blinkLamp(status){
+              if(status){
+                  $("#btnBlink").text("关灯");
+                  $("#btnBlink").css("background","yellow");
+              }else{
+                  $("#btnBlink").text("开灯");
+                  $("#btnBlink").css("background","black");
+              }
+          }
+
+
+          $(function(){
+              blinkLamp(<%= status %>);
+
+              //http://192.168.109.118:3000/gpio/blink
+              $("#btnBlink").click(function(){
+                  $.ajax({
+                      url: "/gpio/blink?id="+Math.floor(Math.random()*10000000)
+                  }).done(function(data) {
+                      blinkLamp(data.status);
+                  });
+              });
+
+
+          });
+
+      </script>
+  </head>
+  <body>
+    <div style="text-align: center;"><button id="btnBlink">开灯</button></div>
+  </body>
+</html>
